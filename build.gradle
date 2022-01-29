@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+mainClassName = 'com.axcdev.GachaBot.Main'
+
+group 'com.axcdev'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("net.dv8tion:JDA:5.0.0-alpha.4") {
+        exclude module: 'opus-java'
+    }
+
+    implementation 'org.twitter4j:twitter4j-core:4.0.7'
+    implementation 'org.twitter4j:twitter4j-async:4.0.7'
+    implementation 'org.twitter4j:twitter4j-stream:4.0.7'
+
+    implementation 'com.dropbox.core:dropbox-core-sdk:5.1.1'
+
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+}
