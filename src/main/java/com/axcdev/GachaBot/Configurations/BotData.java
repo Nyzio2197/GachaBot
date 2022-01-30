@@ -1,6 +1,7 @@
 package com.axcdev.GachaBot.Configurations;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +19,18 @@ public class BotData {
 
     // store generated files locally, on DropBox, or both
     private boolean localFileStorage;
-    private String DropBoxToken;
+    private transient String DropBoxToken;
 
     // Twitter OAuth
-    private String TwitterOAuthConsumerKey;
-    private String TwitterOAuthConsumerSecret;
-    private String TwitterOAuthAccessToken;
-    private String TwitterOAuthAccessTokenSecret;
+    private transient String TwitterOAuthConsumerKey;
+    private transient String TwitterOAuthConsumerSecret;
+    private transient String TwitterOAuthAccessToken;
+    private transient String TwitterOAuthAccessTokenSecret;
+    private long[] TwitterFollowingIds;
+
+    // Discord authentication
+    private transient String DiscordToken;
+    private long[] DeveloperDiscordIds;
 
     // maintenance times and duration
     private boolean inMaintenance;
@@ -68,4 +74,11 @@ public class BotData {
         this.nextMaintenanceDuration = nextMaintenanceDuration;
     }
 
+    public String toString() {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .serializeNulls()
+                .create();
+        return gson.toJson(self);
+    }
 }

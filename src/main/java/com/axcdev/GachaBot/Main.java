@@ -21,7 +21,7 @@ public class Main {
             logger.error("Invalid number of arguments passed. Expected {}, got {}", expectedArgs, args.length);
             throw new IllegalArgumentException("Invalid number of arguments passed");
         }
-        
+
         // get BotData singleton
         switch (args[0]) {
             case "file":
@@ -42,7 +42,7 @@ public class Main {
                 logger.error("Invalid configuration source: " + args[0]);
                 throw new IllegalArgumentException("No BotData configuration specified");
         }
-
+        System.out.println(botData);
         // start the bot
 
     }
