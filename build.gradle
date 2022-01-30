@@ -13,10 +13,19 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
     implementation("net.dv8tion:JDA:5.0.0-alpha.4") {
         exclude module: 'opus-java'
     }
+    implementation 'org.slf4j:slf4j-api:1.7.33'
+    implementation 'org.slf4j:slf4j-simple:1.7.33'
 
     implementation 'org.twitter4j:twitter4j-core:4.0.7'
     implementation 'org.twitter4j:twitter4j-async:4.0.7'
@@ -25,6 +34,7 @@ dependencies {
     implementation 'com.dropbox.core:dropbox-core-sdk:5.1.1'
 
     implementation 'com.google.code.gson:gson:2.8.9'
+
     implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
 }
