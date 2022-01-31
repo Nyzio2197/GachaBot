@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 public class BotData {
 
     private static BotData self;
@@ -26,11 +28,11 @@ public class BotData {
     private transient String TwitterOAuthConsumerSecret;
     private transient String TwitterOAuthAccessToken;
     private transient String TwitterOAuthAccessTokenSecret;
-    private long[] TwitterFollowingIds;
+    private Set<Long> TwitterFollowingIds;
 
     // Discord authentication
     private transient String DiscordToken;
-    private long[] DeveloperDiscordIds;
+    private Set<Long> DeveloperDiscordIds;
 
     // maintenance times and duration
     private boolean inMaintenance;
@@ -72,6 +74,10 @@ public class BotData {
     public void setNextMaintenanceDuration(String nextMaintenanceDuration) {
         logger.debug("Setting nextMaintenanceDuration to " + nextMaintenanceDuration);
         this.nextMaintenanceDuration = nextMaintenanceDuration;
+    }
+
+    public Set<Long> getDeveloperDiscordIds() {
+        return DeveloperDiscordIds;
     }
 
     public String toString() {

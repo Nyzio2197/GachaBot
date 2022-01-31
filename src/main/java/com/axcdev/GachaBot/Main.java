@@ -47,4 +47,7 @@ public class Main {
 
     }
 
+    public static BotData getBotData() {
+        return botData;
+    }
 }
