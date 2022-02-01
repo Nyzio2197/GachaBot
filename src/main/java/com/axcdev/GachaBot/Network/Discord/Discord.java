@@ -1,15 +1,17 @@
 package com.axcdev.GachaBot.Network.Discord;
 
-import com.axcdev.GachaBot.Configurations.Server;
 import net.dv8tion.jda.api.JDA;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 public class Discord {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(Discord.class);
+
     private static JDA jda;
-    private static List<Server> servers;
 
-
-
+    public static JDA getJda() {
+        return jda;
+    }
 }
