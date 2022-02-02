@@ -3,6 +3,7 @@ package com.axcdev.GachaBot.Configurations;
 import com.axcdev.GachaBot.Main;
 import com.axcdev.GachaBot.Network.Discord.Discord;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -100,7 +101,17 @@ public class Server {
         for (String group : validGroups) {
             groupAndChannelIds.put(group, new ArrayList<>());
         }
-        toggleHashMap = new HashMap<>();
+        // delay the initialization of the toggleHashMap
+        HashMap<String, Boolean> toggleHashMap1;
+        // Generate toggleHashMap with the defaults as stored in ServerToggles.json or default to empty HashMap
+        try {
+            toggleHashMap1 = new Gson().fromJson(Files.readString(Path.of("ServerToggles.json")), new TypeToken<HashMap<String, Boolean>>() {}.getType());
+        } catch (IOException e) {
+            LOGGER.error("Could not read ServerToggles.json", e);
+            e.printStackTrace();
+            toggleHashMap1 = new HashMap<>();
+        }
+        toggleHashMap = toggleHashMap1;
         lastSentTwitterMessagesByUserId = new HashMap<>();
         security = new Security();
     }
@@ -112,7 +123,7 @@ public class Server {
                 return server;
         }
         Server server = new Server(guild);
-        LOGGER.debug("Created new server {}", server.getName());
+        LOGGER.debug("Created new server {} with id {}", server.getName(), server.getGuildId());
         servers.add(server);
         return server;
     }
@@ -144,11 +155,17 @@ public class Server {
 
     // add and remove channels from the server
     public boolean addChannel(String group, TextChannel channel) {
-        if (groupAndChannelIds.containsKey(group)) {
-            if (!groupAndChannelIds.get(group).contains(channel.getIdLong())) {
-                groupAndChannelIds.get(group).add(channel.getIdLong());
-                return true;
-            }
+        if (Arrays.stream(validGroups).noneMatch(group::equals)) {
+            LOGGER.error("Tried to add channel to invalid group {}", group);
+            return false;
+        }
+        if (!channel.canTalk()) {
+            LOGGER.error("Tried to add channel {} to group {} but it is not writable", channel.getName(), group);
+            return false;
+        }
+        if (!groupAndChannelIds.get(group).contains(channel.getIdLong())) {
+            groupAndChannelIds.get(group).add(channel.getIdLong());
+            return true;
         }
         return false;
     }
@@ -166,7 +183,7 @@ public class Server {
     // push Twitter updates to Twitter channels
     public void pushTwitterUpdate(String TwitterUsername, long TwitterStatusId, long TwitterUserId) {
         // clear previous stored messages and update with new ones
-        lastSentTwitterMessagesByUserId.get(TwitterUserId).clear();
+        lastSentTwitterMessagesByUserId.put(TwitterUserId, new ArrayList<>());
         lastSentTwitterMessagesByUserId.get(TwitterUserId).add(new Message("" + TwitterStatusId, null));
         for (Long channelId : groupAndChannelIds.get(validGroups[2])) {
             TextChannel channel = Discord.getJda().getTextChannelById(channelId);
