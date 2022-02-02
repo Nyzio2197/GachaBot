@@ -50,6 +50,30 @@ public class BotData {
         return self;
     }
 
+    public String getDropBoxToken() {
+        return DropBoxToken;
+    }
+
+    public String getTwitterOAuthConsumerKey() {
+        return TwitterOAuthConsumerKey;
+    }
+
+    public String getTwitterOAuthConsumerSecret() {
+        return TwitterOAuthConsumerSecret;
+    }
+
+    public String getTwitterOAuthAccessToken() {
+        return TwitterOAuthAccessToken;
+    }
+
+    public String getTwitterOAuthAccessTokenSecret() {
+        return TwitterOAuthAccessTokenSecret;
+    }
+
+    public String getDiscordToken() {
+        return DiscordToken;
+    }
+
     public boolean isInMaintenance() {
         return inMaintenance;
     }

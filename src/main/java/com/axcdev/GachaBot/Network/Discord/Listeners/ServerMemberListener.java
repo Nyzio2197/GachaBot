@@ -1,4 +1,9 @@
 package com.axcdev.GachaBot.Network.Discord.Listeners;
 
-public class ServerMemberListener {
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+public class ServerMemberListener extends ListenerAdapter {
+
+
+
 }

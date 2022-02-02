@@ -1,6 +1,7 @@
 package com.axcdev.GachaBot;
 
 import com.axcdev.GachaBot.Configurations.BotData;
+import com.axcdev.GachaBot.Network.Discord.Discord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,9 +43,8 @@ public class Main {
                 LOGGER.error("Invalid configuration source: " + args[0]);
                 throw new IllegalArgumentException("No BotData configuration specified");
         }
-        System.out.println(botData);
         // start the bot
-
+        Discord.connect(botData.getDiscordToken());
     }
 
     public static BotData getBotData() {
