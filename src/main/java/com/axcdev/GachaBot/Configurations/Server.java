@@ -108,7 +108,6 @@ public class Server {
             toggleHashMap1 = new Gson().fromJson(Files.readString(Path.of("ServerToggles.json")), new TypeToken<HashMap<String, Boolean>>() {}.getType());
         } catch (IOException e) {
             LOGGER.error("Could not read ServerToggles.json", e);
-            e.printStackTrace();
             toggleHashMap1 = new HashMap<>();
         }
         toggleHashMap = toggleHashMap1;
@@ -195,8 +194,7 @@ public class Server {
                         lastSentTwitterMessagesByUserId.get(TwitterUserId).add(new Message(message.getId(), message.getChannel().getId()));
                     });
                 } catch (IOException e) {
-                    LOGGER.error("Could not read TwitterMessage.format");
-                    e.printStackTrace();
+                    LOGGER.error("Could not read TwitterMessage.format", e);
                 }
             } else {
                 LOGGER.warn("Could not send Twitter update to channel {} in {} server. Removing.", channelId, name);
@@ -246,8 +244,7 @@ public class Server {
             try {
                 Files.writeString(Path.of("servers/" + server.name + ".json"), server.toJson());
             } catch (IOException e) {
-                server.LOGGER.error("Could not save server {}", server.name);
-                e.printStackTrace();
+                server.LOGGER.error("Could not save server {}", server.name, e);
             }
         }
     }
@@ -262,14 +259,12 @@ public class Server {
                 } catch (IOException e) {
                     // had to create a new logger
                     // not sure how to get the logger from the class
-                    staticLogger.error("Could not load server {}", file.getName());
-                    e.printStackTrace();
+                    staticLogger.error("Could not load server {}", file.getName(), e);
                 }
             }
         } catch (NullPointerException e) {
             // no servers folder
-            staticLogger.error("Could not load servers");
-            e.printStackTrace();
+            staticLogger.error("Could not load servers", e);
         }
     }
 

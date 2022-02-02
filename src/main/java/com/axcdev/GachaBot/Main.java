@@ -32,7 +32,7 @@ public class Main {
                     LOGGER.debug("Configuration read from file: " + json);
                     botData = BotData.getSingleton(json);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Failed to read configuration file", e);
                 }
                 break;
             case "env":

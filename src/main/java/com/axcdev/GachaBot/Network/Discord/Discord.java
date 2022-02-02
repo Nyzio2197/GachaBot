@@ -32,11 +32,15 @@ public class Discord {
     public static void connect(String token) {
         try {
             jda = JDABuilder.createDefault(token).build();
-            jda.addEventListener(DEVELOPER_LISTENER, DIRECT_MESSAGE_LISTENER, SERVER_MEMBER_LISTENER, SERVER_MODERATOR_LISTENER);
+            // I'm not sure if this casting will work
+            // IntelliJ Idea is complaining about it
+            jda.addEventListener((Object[]) LISTENERS);
         } catch (Exception e) {
             LOGGER.error("Error connecting to Discord: " + e.getMessage());
         }
     }
+
+
 
     public static JDA getJda() {
         return jda;
