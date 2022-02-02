@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -171,13 +172,13 @@ public class Server {
             TextChannel channel = Discord.getJda().getTextChannelById(channelId);
             if (channel != null) {
                 try {
-                    String messageString = Files.readString(Path.of("TwitterMessageFormat.config"));
+                    String messageString = Files.readString(Path.of("TwitterMessage.format"));
                     messageString = messageString.replace("{TWITTER_STATUS}", "https://twitter.com/" + TwitterUsername + "/status/" + TwitterStatusId);
                     channel.sendMessage(messageString).queue(message -> {
                         lastSentTwitterMessagesByUserId.get(TwitterUserId).add(new Message(message.getId(), message.getChannel().getId()));
                     });
                 } catch (IOException e) {
-                    LOGGER.error("Could not read TwitterMessageFormat.config");
+                    LOGGER.error("Could not read TwitterMessage.format");
                     e.printStackTrace();
                 }
             } else {
@@ -222,6 +223,37 @@ public class Server {
         return new Gson().toJson(this);
     }
 
+    // serializing server list into individual JSONs
+    public static void saveServers() {
+        for (Server server : servers) {
+            try {
+                Files.writeString(Path.of("servers/" + server.name + ".json"), server.toJson());
+            } catch (IOException e) {
+                server.LOGGER.error("Could not save server {}", server.name);
+                e.printStackTrace();
+            }
+        }
+    }
 
+    // load individual JSONs as servers into server list
+    public static void loadServers() {
+        Logger staticLogger = LoggerFactory.getLogger(Server.class);
+        try {
+            for (File file : Objects.requireNonNull(new File("servers").listFiles())) {
+                try {
+                    servers.add(new Gson().fromJson(Files.readString(Path.of(file.getPath())), Server.class));
+                } catch (IOException e) {
+                    // had to create a new logger
+                    // not sure how to get the logger from the class
+                    staticLogger.error("Could not load server {}", file.getName());
+                    e.printStackTrace();
+                }
+            }
+        } catch (NullPointerException e) {
+            // no servers folder
+            staticLogger.error("Could not load servers");
+            e.printStackTrace();
+        }
+    }
 
 }
