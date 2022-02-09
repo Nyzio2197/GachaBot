@@ -50,6 +50,7 @@ public class BotData {
         return self;
     }
 
+    // API
     public String getDropBoxToken() {
         return DropBoxToken;
     }
@@ -72,6 +73,19 @@ public class BotData {
 
     public String getDiscordToken() {
         return DiscordToken;
+    }
+
+    // User interaction
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public boolean isInMaintenance() {

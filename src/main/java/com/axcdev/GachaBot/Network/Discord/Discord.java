@@ -40,9 +40,8 @@ public class Discord {
         }
     }
 
-
-
     public static JDA getJda() {
         return jda;
     }
+
 }

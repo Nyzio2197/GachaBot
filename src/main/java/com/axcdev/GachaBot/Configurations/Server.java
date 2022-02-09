@@ -20,6 +20,7 @@ import java.util.*;
 public class Server {
 
     private static final List<Server> servers = new ArrayList<>();
+    private static final Logger STATIC_LOGGER = LoggerFactory.getLogger(Server.class);
     private final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 
     private final String name;
@@ -116,13 +117,13 @@ public class Server {
     }
 
     // get an existing server or create a new one
-    public Server getServer(Guild guild) {
+    public static Server getServer(Guild guild) {
         for (Server server : servers) {
             if (server.getGuildId().equals(guild.getIdLong()))
                 return server;
         }
         Server server = new Server(guild);
-        LOGGER.debug("Created new server {} with id {}", server.getName(), server.getGuildId());
+        STATIC_LOGGER.debug("Created new server {} with id {}", server.getName(), server.getGuildId());
         servers.add(server);
         return server;
     }
@@ -251,20 +252,17 @@ public class Server {
 
     // load individual JSONs as servers into server list
     public static void loadServers() {
-        Logger staticLogger = LoggerFactory.getLogger(Server.class);
         try {
             for (File file : Objects.requireNonNull(new File("servers").listFiles())) {
                 try {
                     servers.add(new Gson().fromJson(Files.readString(Path.of(file.getPath())), Server.class));
                 } catch (IOException e) {
-                    // had to create a new logger
-                    // not sure how to get the logger from the class
-                    staticLogger.error("Could not load server {}", file.getName(), e);
+                    STATIC_LOGGER.error("Could not load server {}", file.getName(), e);
                 }
             }
         } catch (NullPointerException e) {
             // no servers folder
-            staticLogger.error("Could not load servers", e);
+            STATIC_LOGGER.error("Could not load servers", e);
         }
     }
 
