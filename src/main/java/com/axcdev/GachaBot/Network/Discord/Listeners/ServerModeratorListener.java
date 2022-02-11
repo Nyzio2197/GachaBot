@@ -19,6 +19,10 @@ public class ServerModeratorListener extends AnonymousListener {
 
     @Override
     public void messageReceived(MessageReceivedEvent event, Server server, TextChannel textChannel, String command) {
+        // ensure the message is from a server moderator
+        if (!server.isModerator(event.getMember())) {
+            return;
+        }
         if (command.length() > 0) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             switch (command) {
