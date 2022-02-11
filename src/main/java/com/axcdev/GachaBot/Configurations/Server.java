@@ -31,6 +31,7 @@ public class Server {
     private final HashMap<String, List<Long>> groupAndChannelIds;
 
     // all the random internal toggles
+    // the keys for the toggles cannot have spaces or else they can't be toggled
     private final HashMap<String, Boolean> toggleHashMap;
 
     // serializing discord messages
@@ -134,6 +135,16 @@ public class Server {
 
     public Long getGuildId() {
         return guildId;
+    }
+
+    // returns a copy of the toggles
+    public HashMap<String, Boolean> getToggleHashMap() {
+        return new HashMap<>(toggleHashMap);
+    }
+
+    // returns a copy of the channels
+    public HashMap<String, List<Long>> getGroupAndChannelIds() {
+        return new HashMap<>(groupAndChannelIds);
     }
 
     // wrapper for security methods
