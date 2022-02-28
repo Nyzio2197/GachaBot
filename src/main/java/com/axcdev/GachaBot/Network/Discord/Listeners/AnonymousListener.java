@@ -2,7 +2,6 @@ package com.axcdev.GachaBot.Network.Discord.Listeners;
 
 import com.axcdev.GachaBot.Configurations.Server;
 import com.axcdev.GachaBot.Main;
-import com.axcdev.GachaBot.Network.Discord.Discord;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
