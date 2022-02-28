@@ -172,30 +172,26 @@ public class Server {
     }
 
     // add and remove channels from the server
-    public boolean addChannel(String group, TextChannel channel) {
+    public void addChannel(String group, TextChannel channel) {
         if (Arrays.stream(validGroups).noneMatch(group::equals)) {
             LOGGER.error("Tried to add channel to invalid group {}", group);
-            return false;
+            return;
         }
         if (!channel.canTalk()) {
             LOGGER.error("Tried to add channel {} to group {} but it is not writable", channel.getName(), group);
-            return false;
+            return;
         }
         if (!groupAndChannelIds.get(group).contains(channel.getIdLong())) {
             groupAndChannelIds.get(group).add(channel.getIdLong());
-            return true;
         }
-        return false;
     }
 
-    public boolean removeChannel(String group, TextChannel channel) {
+    public void removeChannel(String group, TextChannel channel) {
         if (groupAndChannelIds.containsKey(group)) {
             if (groupAndChannelIds.get(group).contains(channel.getIdLong())) {
                 groupAndChannelIds.get(group).remove(channel.getIdLong());
-                return true;
             }
         }
-        return false;
     }
 
     // push Twitter updates to Twitter channels
