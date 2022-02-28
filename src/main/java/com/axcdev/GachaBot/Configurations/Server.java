@@ -152,6 +152,13 @@ public class Server {
         security.editModerationSecurity(securityLevel);
     }
 
+    public String getSecurityLevels() {
+        return "0: Administrator Permissions\n" +
+                "1: Server Management Permissions\n" +
+                "2: Channel Management Permissions\n" +
+                "3: Message Management Permissions";
+    }
+
     public boolean addModerator(Member member) {
         return security.addModerator(member);
     }

@@ -43,6 +43,7 @@ public class ServerModeratorListener extends AnonymousListener {
                         String toggle = args[1];
                         if (server.getToggleHashMap().containsKey(toggle)) {
                             server.getToggleHashMap().put(toggle, !server.getToggleHashMap().get(toggle));
+                            LOGGER.debug("{} in {} changed toggle {} to {}", event.getAuthor().getName(), server.getName(), toggle, server.getToggleHashMap().get(toggle));
                         } else {
                             textChannel.sendMessage("Toggle not found.").queue();
                             textChannel.sendMessage("The bot is case sensitive. Use `" + Main.getBotData().getPrefix() + "toggles` to see all toggles.").queue();
@@ -83,11 +84,22 @@ public class ServerModeratorListener extends AnonymousListener {
                         if (removedChannels.length() > 0) {
                             textChannel.sendMessage("Removed channels: " + removedChannels).queue();
                         }
+                        LOGGER.debug("{} in {} added {} and removed {} from  {}", event.getAuthor().getName(), server.getName(), addedChannels, removedChannels, group);
                     } else {
                         textChannel.sendMessage("Channel group not found.").queue();
                         textChannel.sendMessage("Valid channel groups are: " + server.getGroupAndChannelIds().keySet()).queue();
                     }
                     break;
+                case "security":
+                    String[] args2 = command.split(" ");
+                    if (args2.length > 1 && args2[1].matches("[0-3]")) {
+                        LOGGER.debug("{} in {} changed security level to {}", event.getAuthor().getName(), server.getName(), args2[1]);
+                        int security = Integer.parseInt(args2[1]);
+                        server.editModerationSecurity(security);
+                    } else {
+                        textChannel.sendMessage("Invalid security level.").queue();
+                        textChannel.sendMessage("Valid security levels are: \n" + server.getSecurityLevels()).queue();
+                    }
                 default:
                     textChannel.sendMessage("Command not found.").queue();
                     textChannel.sendMessage("Use `" + Main.getBotData().getPrefix() + "help` to see all commands.").queue();
