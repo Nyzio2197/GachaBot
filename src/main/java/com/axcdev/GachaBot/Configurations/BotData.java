@@ -40,6 +40,9 @@ public class BotData {
     private String nextMaintenanceDate; // format MM/dd/yyyy
     private String nextMaintenanceDuration;
 
+    // internal time tracking
+    private boolean daylightSavingsTime;
+
     // Only allow self to create
     private BotData() {}
 
@@ -113,6 +116,14 @@ public class BotData {
     public void setNextMaintenanceDuration(String nextMaintenanceDuration) {
         LOGGER.debug("Setting nextMaintenanceDuration to " + nextMaintenanceDuration);
         this.nextMaintenanceDuration = nextMaintenanceDuration;
+    }
+
+    public int getDaylightSavingTimeOffset() {
+        return daylightSavingsTime ? 0 : 3600000;
+    }
+
+    public void setDaylightSavingsTime(boolean daylightSavingsTime) {
+        this.daylightSavingsTime = daylightSavingsTime;
     }
 
     public Set<Long> getDeveloperDiscordIds() {
